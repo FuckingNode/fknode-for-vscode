@@ -1,0 +1,86 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "FuckingNode configuration (fknode.yaml)",
+    "type": "object",
+    "properties": {
+        "divineProtection": {
+            "description": "Divine protection, basically to ignore stuff. Must always be an array.",
+            "oneOf": [
+                { "enum": ["*", "disabled"] },
+                {
+                    "type": "array",
+                    "items": {
+                        "enum": [
+                            "updater",
+                            "cleaner",
+                            "linter",
+                            "prettifier",
+                            "destroyer"
+                        ]
+                    }
+                }
+            ]
+        },
+        "lintCmd": {
+            "type": "string",
+            "description": "Script used for linting. Must be a single runtime script name."
+        },
+        "prettyCmd": {
+            "type": "string",
+            "description": "Script used for prettifying. Must be a single runtime script name."
+        },
+        "destroy": {
+            "type": "object",
+            "description": "Settings for the destroyer mechanism.",
+            "properties": {
+                "intensities": {
+                    "type": "array",
+                    "items": {
+                        "enum": ["*", "low", "medium", "high", "maxim"]
+                    },
+                    "description": "Intensities the destroyer should run at."
+                },
+                "targets": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "description": "File paths to be destroyed."
+                }
+            }
+        },
+        "commitActions": {
+            "type": "boolean",
+            "description": "If true, commits changes after an action."
+        },
+        "commitMessage": {
+            "type": "string",
+            "description": "Custom commit message."
+        },
+        "updateCmdOverride": {
+            "type": "string",
+            "description": "Override the default update command."
+        },
+        "flagless": {
+            "type": "object",
+            "description": "Flagless features settings.",
+            "properties": {
+                "flaglessUpdate": { "type": "boolean" },
+                "flaglessDestroy": { "type": "boolean" },
+                "flaglessLint": { "type": "boolean" },
+                "flaglessPretty": { "type": "boolean" },
+                "flaglessCommit": { "type": "boolean" }
+            }
+        },
+        "releaseCmd": {
+            "type": "string",
+            "description": "A task to be executed on release."
+        },
+        "releaseAlwaysDry": {
+            "type": "boolean",
+            "description": "If true, releases always use dry-run."
+        },
+        "commitCmd": {
+            "type": "string",
+            "description": "A task to be executed on commit."
+        }
+    }
+}
