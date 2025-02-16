@@ -1,8 +1,6 @@
-# Change Log
+# Changelog
 
-All notable changes to the "fknode" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+All notable changes to the FkNode extension will be documented in this file.
 
 ## [Unreleased]
 
