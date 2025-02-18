@@ -134,6 +134,21 @@ export function activate(context: vscode.ExtensionContext) {
             },
         },
         {
+            name: "fknode.cleanHard",
+            handler: () => {
+                run(
+                    "bg",
+                    "fuckingnode hard-clean",
+                    `Cleaning all of your package managers' cache`,
+                    self,
+                    "fkclean (hard)"
+                );
+            },
+        },
+        // TODO
+        // allow to change settings and stuff from the extension too
+        // we'll have to look at https://code.visualstudio.com/api/references/vscode-api#window.showInputBox
+        {
             name: "fknode.audit",
             handler: () => {
                 run(
@@ -154,6 +169,18 @@ export function activate(context: vscode.ExtensionContext) {
                     `Strictly auditing ${self}`,
                     self,
                     "fkaudit (strict)"
+                );
+            },
+        },
+        {
+            name: "fknode.upgrade",
+            handler: () => {
+                run(
+                    "cli",
+                    "fuckingnode upgrade",
+                    `Checking for updates`,
+                    self,
+                    "fuckingnode upgrade"
                 );
             },
         },
