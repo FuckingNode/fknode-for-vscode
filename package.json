@@ -1,7 +1,7 @@
 {
     "name": "fknode",
-    "displayName": "fknode",
-    "description": "The chaos of maintaining JavaScript projects ends here, right at your editor.",
+    "displayName": "FuckingNode for VSCode",
+    "description": "The chaos of maintaining JavaScript projects ends right from your editor.",
     "version": "0.0.1",
     "engines": {
         "vscode": "^1.96.0"
@@ -26,12 +26,20 @@
                 "title": "Cleanup this project with FuckingNode"
             },
             {
+                "command": "fknode.cleanHard",
+                "title": "Hard-clean all of your package managers with FuckingNode"
+            },
+            {
                 "command": "fknode.audit",
                 "title": "Audit this project with FuckingNode"
             },
             {
                 "command": "fknode.auditStrict",
                 "title": "Strictly audit this project with FuckingNode"
+            },
+            {
+                "command": "fknode.upgrade",
+                "title": "Make FuckingNode check for updates"
             }
         ]
     },
