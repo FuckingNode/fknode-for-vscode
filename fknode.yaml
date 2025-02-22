@@ -1,0 +1,4 @@
+destroy:
+  - intensities: ["*"]
+  - targets:
+      - "dist/"

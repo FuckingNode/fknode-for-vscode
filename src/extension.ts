@@ -1,3 +1,8 @@
+/* self note:
+ * vsce publish to publish the extension
+ * don't forget to update the version in package.json
+ * and the changelog in CHANGELOG.md
+ */
 import * as vscode from "vscode";
 import { exec } from "child_process";
 
@@ -82,35 +87,33 @@ const completionProvider: vscode.CompletionItemProvider = {
     },
 };
 
+const cwd = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+
 function run(
     ctx: "bg" | "cli",
     command: string,
     message: string,
-    cwd?: string,
     name?: string
 ): void {
-    switch (ctx) {
-        case "bg": {
-            exec(command, { cwd }, (error, stdout, stderr) => {
-                vscode.window.showInformationMessage(message);
-                // TODO - remove cli coloring and stuff from output
-                // string-utils my beloved would've made it easier
-                if (error) {
-                    vscode.window.showErrorMessage(`Error: ${stderr}`);
-                    return;
-                }
-                vscode.window.showInformationMessage(`Output: ${stdout}`);
-            });
-            return;
-        }
-        case "cli": {
-            const terminal =
-                vscode.window.terminals.find((t) => t.name === name) ||
-                vscode.window.createTerminal(name);
-            terminal.show();
-            terminal.sendText(command);
-            return;
-        }
+    if (ctx === "bg") {
+        exec(command, { cwd }, (error, stdout, stderr) => {
+            vscode.window.showInformationMessage(message);
+            // TODO - remove cli coloring and stuff from output
+            // string-utils my beloved would've made it easier
+            if (error) {
+                vscode.window.showErrorMessage(`Error: ${stderr}`);
+                return;
+            }
+            vscode.window.showInformationMessage(`Output: ${stdout}`);
+        });
+        return;
+    } else {
+        const terminal =
+            vscode.window.terminals.find((t) => t.name === name) ||
+            vscode.window.createTerminal(name);
+        terminal.show();
+        terminal.sendText(command);
+        return;
     }
 }
 
@@ -122,8 +125,6 @@ export function activate(context: vscode.ExtensionContext) {
         )
     );
 
-    const self = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-
     const commands = [
         {
             name: "fknode.clean",
@@ -131,8 +132,7 @@ export function activate(context: vscode.ExtensionContext) {
                 run(
                     "cli",
                     "fuckingnode clean --self",
-                    `Cleaning ${self}`,
-                    self,
+                    `Cleaning ${cwd}`,
                     "fkclean"
                 );
             },
@@ -144,7 +144,6 @@ export function activate(context: vscode.ExtensionContext) {
                     "bg",
                     "fuckingnode hard-clean",
                     `Cleaning all of your package managers' cache`,
-                    self,
                     "fkclean (hard)"
                 );
             },
@@ -204,7 +203,6 @@ export function activate(context: vscode.ExtensionContext) {
                     "bg",
                     `fuckingnode settings change ${actualSettingToChange} ${value}`,
                     `Changing ${settingToChange} to ${value}`,
-                    self,
                     `fuckingnode settings change`
                 );
             },
@@ -214,9 +212,8 @@ export function activate(context: vscode.ExtensionContext) {
             handler: () => {
                 run(
                     "cli",
-                    "fuckingnode audit --self",
-                    `Auditing ${self}`,
-                    self,
+                    "fuckingnode --experimental-audit --self",
+                    `Auditing ${cwd}`,
                     "fkaudit"
                 );
             },
@@ -226,9 +223,8 @@ export function activate(context: vscode.ExtensionContext) {
             handler: () => {
                 run(
                     "cli",
-                    "fuckingnode audit --self -s",
-                    `Strictly auditing ${self}`,
-                    self,
+                    "fuckingnode --experimental-audit --self -s",
+                    `Strictly auditing ${cwd}`,
                     "fkaudit (strict)"
                 );
             },
@@ -240,8 +236,18 @@ export function activate(context: vscode.ExtensionContext) {
                     "cli",
                     "fuckingnode upgrade",
                     `Checking for updates`,
-                    self,
                     "fuckingnode upgrade"
+                );
+            },
+        },
+        {
+            name: "fknode.help",
+            handler: () => {
+                run(
+                    "cli",
+                    "fuckingnode help",
+                    `Seeing help menu`,
+                    "fkhelp"
                 );
             },
         },

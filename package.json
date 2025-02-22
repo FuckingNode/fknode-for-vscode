@@ -1,6 +1,6 @@
 {
     "name": "fknode",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "main": "./dist/extension.js",
     "devDependencies": {
         "@types/vscode": "^1.97.0",
@@ -19,6 +19,7 @@
     "categories": [
         "Language Packs"
     ],
+    "publisher": "ZakaHaceCosas",
     "contributes": {
         "yamlValidation": [
             {
@@ -32,6 +33,10 @@
             {
                 "command": "fknode.clean",
                 "title": "Cleanup this project with FuckingNode"
+            },
+            {
+                "command": "fknode.help",
+                "title": "Show the help menu for FuckingNode"
             },
             {
                 "command": "fknode.cleanHard",

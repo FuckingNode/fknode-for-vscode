@@ -36,7 +36,7 @@
                 "intensities": {
                     "type": "array",
                     "items": {
-                        "enum": ["*", "low", "medium", "high", "maxim"]
+                        "enum": ["*", "normal", "hard", "hard-only", "maxim", "maxim-only"]
                     },
                     "description": "Intensities the destroyer should run at."
                 },
