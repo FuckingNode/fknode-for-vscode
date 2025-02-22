@@ -58,7 +58,7 @@
     "description": "The chaos of maintaining JavaScript projects ends right from your editor.",
     "displayName": "FuckingNode for VSCode",
     "engines": {
-        "vscode": "^1.96.0"
+        "vscode": "^1.97.0"
     },
     "scripts": {
         "vscode:prepublish": "bun run package",
@@ -73,5 +73,9 @@
         "check-types": "tsc --noEmit",
         "lint": "eslint src",
         "test": "vscode-test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ZakaHaceCosas/fknode-for-vscode.git"
     }
 }
