@@ -8,6 +8,8 @@
         "strict": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
-        "noUnusedParameters": true
+        "noUnusedParameters": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
     }
 }

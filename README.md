@@ -5,7 +5,7 @@ A basic extension that brings autocompletion for `fknode.yaml` and allows to run
 ## Features
 
 * `fknode.yaml` autocompletion.
-* Run `clean` and `audit` from the Command Palette.
+* Run cleanup, hard cleanup, check for updates, and change settings from the Command Palette.
 
 ## Release Notes
 

@@ -1,16 +1,24 @@
 {
     "name": "fknode",
-    "displayName": "FuckingNode for VSCode",
-    "description": "The chaos of maintaining JavaScript projects ends right from your editor.",
     "version": "0.0.1",
-    "engines": {
-        "vscode": "^1.96.0"
+    "main": "./dist/extension.js",
+    "devDependencies": {
+        "@types/vscode": "^1.97.0",
+        "@types/mocha": "^10.0.10",
+        "@types/node": "^20.17.19",
+        "@typescript-eslint/eslint-plugin": "^8.24.1",
+        "@typescript-eslint/parser": "^8.24.1",
+        "eslint": "^9.20.1",
+        "esbuild": "^0.24.2",
+        "npm-run-all": "^4.1.5",
+        "typescript": "^5.7.3",
+        "@vscode/test-cli": "^0.0.10",
+        "@vscode/test-electron": "^2.4.1"
     },
+    "activationEvents": [],
     "categories": [
         "Language Packs"
     ],
-    "activationEvents": [],
-    "main": "./dist/extension.js",
     "contributes": {
         "yamlValidation": [
             {
@@ -30,6 +38,10 @@
                 "title": "Hard-clean all of your package managers with FuckingNode"
             },
             {
+                "command": "fknode.changeSettings",
+                "title": "Change FuckingNode settings"
+            },
+            {
                 "command": "fknode.audit",
                 "title": "Audit this project with FuckingNode"
             },
@@ -43,31 +55,23 @@
             }
         ]
     },
+    "description": "The chaos of maintaining JavaScript projects ends right from your editor.",
+    "displayName": "FuckingNode for VSCode",
+    "engines": {
+        "vscode": "^1.96.0"
+    },
     "scripts": {
         "vscode:prepublish": "bun run package",
-        "compile": "bun run check-types && bun run lint && node esbuild.js",
+        "compile": "bun run check-types && bun run lint && bun esbuild.js",
         "watch": "npm-run-all -p watch:*",
-        "watch:esbuild": "node esbuild.js --watch",
+        "watch:esbuild": "bun esbuild.js --watch",
         "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-        "package": "bun run check-types && bun run lint && node esbuild.js --production",
+        "package": "bun run check-types && bun run lint && bun esbuild.js --production",
         "compile-tests": "tsc -p . --outDir out",
         "watch-tests": "tsc -p . -w --outDir out",
         "pretest": "bun run compile-tests && bun run compile && bun run lint",
         "check-types": "tsc --noEmit",
         "lint": "eslint src",
         "test": "vscode-test"
-    },
-    "devDependencies": {
-        "@types/vscode": "^1.96.0",
-        "@types/mocha": "^10.0.10",
-        "@types/node": "20.x",
-        "@typescript-eslint/eslint-plugin": "^8.17.0",
-        "@typescript-eslint/parser": "^8.17.0",
-        "eslint": "^9.16.0",
-        "esbuild": "^0.24.0",
-        "npm-run-all": "^4.1.5",
-        "typescript": "^5.7.2",
-        "@vscode/test-cli": "^0.0.10",
-        "@vscode/test-electron": "^2.4.1"
     }
 }

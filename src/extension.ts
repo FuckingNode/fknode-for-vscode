@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { exec } from "child_process";
 
 const completionProvider: vscode.CompletionItemProvider = {
-    provideCompletionItems() {
+    provideCompletionItems(): vscode.CompletionItem[] {
         const completions: vscode.CompletionItem[] = [];
 
         const suggestions = [
@@ -10,6 +10,7 @@ const completionProvider: vscode.CompletionItemProvider = {
                 label: "divineProtection",
                 kind: vscode.CompletionItemKind.Property,
                 detail: "Divine protection options",
+                insertText: "*",
             },
             {
                 label: "lintCmd",
@@ -54,7 +55,7 @@ const completionProvider: vscode.CompletionItemProvider = {
                 label: "releaseCmd",
                 kind: vscode.CompletionItemKind.Property,
                 detail: "Task to run on release. String,",
-                insertText: "prerelease # would run 'npm run prerelease'", 
+                insertText: "prerelease # would run 'npm run prerelease'",
             },
             {
                 label: "releaseAlwaysDry",
@@ -73,6 +74,7 @@ const completionProvider: vscode.CompletionItemProvider = {
         suggestions.forEach((s) => {
             const item = new vscode.CompletionItem(s.label, s.kind);
             item.detail = s.detail;
+            item.insertText = s.insertText;
             completions.push(item);
         });
 
@@ -86,11 +88,13 @@ function run(
     message: string,
     cwd?: string,
     name?: string
-) {
+): void {
     switch (ctx) {
         case "bg": {
             exec(command, { cwd }, (error, stdout, stderr) => {
                 vscode.window.showInformationMessage(message);
+                // TODO - remove cli coloring and stuff from output
+                // string-utils my beloved would've made it easier
                 if (error) {
                     vscode.window.showErrorMessage(`Error: ${stderr}`);
                     return;
@@ -145,9 +149,66 @@ export function activate(context: vscode.ExtensionContext) {
                 );
             },
         },
-        // TODO
-        // allow to change settings and stuff from the extension too
-        // we'll have to look at https://code.visualstudio.com/api/references/vscode-api#window.showInputBox
+        // https://code.visualstudio.com/api/references/vscode-api#window.showInputBox
+        {
+            name: "fknode.changeSettings",
+            handler: async () => {
+                const settingToChange: string | undefined =
+                    await vscode.window.showQuickPick(
+                        [
+                            "Default cleaner intensity",
+                            "Favorite IDE/editor",
+                            "Log flush frequency",
+                            "Update check frequency",
+                        ],
+                        {
+                            canPickMany: false,
+                            ignoreFocusOut: false,
+                            title: "Choose setting to change",
+                        }
+                    );
+
+                const value = await vscode.window.showInputBox({
+                    ignoreFocusOut: true,
+                    placeHolder: `Enter new value for ${settingToChange}`,
+                    prompt: "What do you want to set this setting to?",
+                    title: `Change ${settingToChange}`,
+                });
+
+                // here i'd use jsr:@zakahacecosas/string-utils but it does not work here :sob:
+                if (
+                    ![
+                        "Default cleaner intensity",
+                        "Favorite IDE/editor",
+                        "Log flush frequency",
+                        "Update check frequency",
+                    ].includes(settingToChange ?? "")
+                ) {
+                    throw new Error("Invalid setting");
+                }
+
+                const actualSettingToChange:
+                    | "updateFreq"
+                    | "flushFreq"
+                    | "defaultIntensity"
+                    | "favEditor" =
+                    settingToChange === "Update check frequency"
+                        ? "updateFreq"
+                        : settingToChange === "Log flush frequency"
+                        ? "flushFreq"
+                        : settingToChange === "Default cleaner intensity"
+                        ? "defaultIntensity"
+                        : "favEditor";
+
+                run(
+                    "bg",
+                    `fuckingnode settings change ${actualSettingToChange} ${value}`,
+                    `Changing ${settingToChange} to ${value}`,
+                    self,
+                    `fuckingnode settings change`
+                );
+            },
+        },
         {
             name: "fknode.audit",
             handler: () => {
