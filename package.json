@@ -1,6 +1,6 @@
 {
     "name": "fknode",
-    "version": "0.0.2",
+    "version": "0.1.0",
     "main": "./dist/extension.js",
     "devDependencies": {
         "@types/vscode": "^1.97.0",
@@ -17,7 +17,7 @@
     },
     "activationEvents": [],
     "categories": [
-        "Language Packs"
+        "Other"
     ],
     "publisher": "ZakaHaceCosas",
     "contributes": {
@@ -33,6 +33,10 @@
             {
                 "command": "fknode.clean",
                 "title": "Cleanup this project with FuckingNode"
+            },
+            {
+                "command": "fknode.commit",
+                "title": "Make a commit for this project with FuckingNode"
             },
             {
                 "command": "fknode.help",

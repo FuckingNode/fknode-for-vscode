@@ -208,6 +208,25 @@ export function activate(context: vscode.ExtensionContext) {
             },
         },
         {
+            name: "fknode.commit",
+            handler: async () => {
+                const commitMessage = await vscode.window.showInputBox({
+                    ignoreFocusOut: true,
+                    placeHolder: "Enter a commit message here",
+                    prompt: "What are you committing?",
+                    title: `Make a Git commit`,
+                });
+
+                // here i'd use jsr:@zakahacecosas/string-utils but it does not work here :sob:
+                run(
+                    "cli",
+                    `fuckingnode commit "${commitMessage}"`,
+                    `Committing "${commitMessage}"`,
+                    `fkcommit`
+                );
+            },
+        },
+        {
             name: "fknode.audit",
             handler: () => {
                 run(
