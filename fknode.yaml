@@ -1,4 +1,4 @@
 destroy:
-  - intensities: ["*"]
-  - targets:
+  intensities: ["*"]
+  targets:
       - "dist/"
