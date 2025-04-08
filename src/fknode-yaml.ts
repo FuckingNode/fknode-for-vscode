@@ -1,0 +1,74 @@
+import * as vscode from 'vscode';
+
+export const suggestions = [
+    {
+        label: "divineProtection",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Divine protection options",
+        insertText: "*",
+    },
+    {
+        label: "lintCmd",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Script used for linting (defaults to ESLint if unset). String.",
+        insertText: "lint # would run 'npm run lint'",
+    },
+    {
+        label: "prettyCmd",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Script used for prettifying (defaults to Prettier if unset). String.",
+        insertText: "prettify # would run 'npm run prettify'",
+    },
+    {
+        label: "destroy",
+        kind: vscode.CompletionItemKind.Module,
+        detail: "Destroyer settings. Object.",
+    },
+    {
+        label: "commitActions",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Automatically commit after an action. Boolean.",
+        insertText: "true",
+    },
+    {
+        label: "commitMessage",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Custom commit message to override FuckingNode's default message for automated commits. String.",
+    },
+    {
+        label: "updateCmdOverride",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Override the update command with a custom script. String.",
+        insertText: "update # would run 'npm run update'",
+    },
+    {
+        label: "flagless",
+        kind: vscode.CompletionItemKind.Module,
+        detail: "Flagless features settings. Object.",
+    },
+    {
+        label: "releaseCmd",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Task to run on release. String,",
+        insertText: "prerelease # would run 'npm run prerelease'",
+    },
+    {
+        label: "releaseAlwaysDry",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "If true, releases always use dry-run, defaults to false. Boolean.",
+        insertText: "false",
+    },
+    {
+        label: "commitCmd",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Task to run on commit. String.",
+        insertText: "precommit # would run 'npm run precommit'",
+    },
+    {
+        label: "launchCmd",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Task to run on launch. String.",
+        insertText: "start # would run 'npm run start'",
+    },
+    
+];

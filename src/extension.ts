@@ -5,76 +5,11 @@
  */
 import * as vscode from "vscode";
 import { exec } from "child_process";
+import { suggestions } from "./fknode-yaml";
 
 const completionProvider: vscode.CompletionItemProvider = {
     provideCompletionItems(): vscode.CompletionItem[] {
         const completions: vscode.CompletionItem[] = [];
-
-        const suggestions = [
-            {
-                label: "divineProtection",
-                kind: vscode.CompletionItemKind.Property,
-                detail: "Divine protection options",
-                insertText: "*",
-            },
-            {
-                label: "lintCmd",
-                kind: vscode.CompletionItemKind.Property,
-                detail: "Script used for linting (defaults to ESLint if unset). String.",
-                insertText: "lint # would run 'npm run lint'",
-            },
-            {
-                label: "prettyCmd",
-                kind: vscode.CompletionItemKind.Property,
-                detail: "Script used for prettifying (defaults to Prettier if unset). String.",
-                insertText: "prettify # would run 'npm run prettify'",
-            },
-            {
-                label: "destroy",
-                kind: vscode.CompletionItemKind.Module,
-                detail: "Destroyer settings. Object.",
-            },
-            {
-                label: "commitActions",
-                kind: vscode.CompletionItemKind.Property,
-                detail: "Automatically commit after an action. Boolean.",
-                insertText: "true",
-            },
-            {
-                label: "commitMessage",
-                kind: vscode.CompletionItemKind.Property,
-                detail: "Custom commit message to override FuckingNode's default message for automated commits. String.",
-            },
-            {
-                label: "updateCmdOverride",
-                kind: vscode.CompletionItemKind.Property,
-                detail: "Override the update command with a custom script. String.",
-                insertText: "update # would run 'npm run update'",
-            },
-            {
-                label: "flagless",
-                kind: vscode.CompletionItemKind.Module,
-                detail: "Flagless features settings. Object.",
-            },
-            {
-                label: "releaseCmd",
-                kind: vscode.CompletionItemKind.Property,
-                detail: "Task to run on release. String,",
-                insertText: "prerelease # would run 'npm run prerelease'",
-            },
-            {
-                label: "releaseAlwaysDry",
-                kind: vscode.CompletionItemKind.Property,
-                detail: "If true, releases always use dry-run, defaults to false. Boolean.",
-                insertText: "false",
-            },
-            {
-                label: "commitCmd",
-                kind: vscode.CompletionItemKind.Property,
-                detail: "Task to run on commit. String.",
-                insertText: "precommit # would run 'npm run precommit'",
-            },
-        ];
 
         suggestions.forEach((s) => {
             const item = new vscode.CompletionItem(s.label, s.kind);
@@ -194,10 +129,10 @@ export function activate(context: vscode.ExtensionContext) {
                     settingToChange === "Update check frequency"
                         ? "updateFreq"
                         : settingToChange === "Log flush frequency"
-                        ? "flushFreq"
-                        : settingToChange === "Default cleaner intensity"
-                        ? "defaultIntensity"
-                        : "favEditor";
+                            ? "flushFreq"
+                            : settingToChange === "Default cleaner intensity"
+                                ? "defaultIntensity"
+                                : "favEditor";
 
                 run(
                     "bg",
@@ -226,28 +161,28 @@ export function activate(context: vscode.ExtensionContext) {
                 );
             },
         },
-        {
-            name: "fknode.audit",
-            handler: () => {
-                run(
-                    "cli",
-                    "fuckingnode --experimental-audit --self",
-                    `Auditing ${cwd}`,
-                    "fkaudit"
-                );
-            },
-        },
-        {
-            name: "fknode.auditStrict",
-            handler: () => {
-                run(
-                    "cli",
-                    "fuckingnode --experimental-audit --self -s",
-                    `Strictly auditing ${cwd}`,
-                    "fkaudit (strict)"
-                );
-            },
-        },
+        // {
+        //     name: "fknode.audit",
+        //     handler: () => {
+        //         run(
+        //             "cli",
+        //             "fuckingnode --experimental-audit --self",
+        //             `Auditing ${cwd}`,
+        //             "fkaudit"
+        //         );
+        //     },
+        // },
+        // {
+        //     name: "fknode.auditStrict",
+        //     handler: () => {
+        //         run(
+        //             "cli",
+        //             "fuckingnode --experimental-audit --self -s",
+        //             `Strictly auditing ${cwd}`,
+        //             "fkaudit (strict)"
+        //         );
+        //     },
+        // },
         {
             name: "fknode.upgrade",
             handler: () => {
@@ -279,4 +214,4 @@ export function activate(context: vscode.ExtensionContext) {
     );
 }
 
-export function deactivate() {}
+export function deactivate() { }

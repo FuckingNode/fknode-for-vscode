@@ -36,7 +36,14 @@
                 "intensities": {
                     "type": "array",
                     "items": {
-                        "enum": ["*", "normal", "hard", "hard-only", "maxim", "maxim-only"]
+                        "enum": [
+                            "*",
+                            "normal",
+                            "hard",
+                            "hard-only",
+                            "maxim",
+                            "maxim-only"
+                        ]
                     },
                     "description": "Intensities the destroyer should run at."
                 },
@@ -49,7 +56,8 @@
         },
         "commitActions": {
             "type": "boolean",
-            "description": "If true, commits changes after an action."
+            "description": "If true, commits changes after an action.",
+            "default": false
         },
         "commitMessage": {
             "type": "string",
@@ -63,11 +71,11 @@
             "type": "object",
             "description": "Flagless features settings.",
             "properties": {
-                "flaglessUpdate": { "type": "boolean" },
-                "flaglessDestroy": { "type": "boolean" },
-                "flaglessLint": { "type": "boolean" },
-                "flaglessPretty": { "type": "boolean" },
-                "flaglessCommit": { "type": "boolean" }
+                "flaglessUpdate": { "type": "boolean", "default": true },
+                "flaglessDestroy": { "type": "boolean", "default": true },
+                "flaglessLint": { "type": "boolean", "default": true },
+                "flaglessPretty": { "type": "boolean", "default": true },
+                "flaglessCommit": { "type": "boolean", "default": false }
             }
         },
         "releaseCmd": {
@@ -76,11 +84,26 @@
         },
         "releaseAlwaysDry": {
             "type": "boolean",
-            "description": "If true, releases always use dry-run."
+            "description": "If true, releases always use dry-run.",
+            "default": true
         },
         "commitCmd": {
             "type": "string",
             "description": "A task to be executed on commit."
+        },
+        "launchCmd": {
+            "type": "string",
+            "description": "A task to be executed on launch.",
+            "default": "\"start\" # runs 'npm run start'"
+        },
+        "launchFile": {
+            "type": "string",
+            "description": "A file to be executed on launch."
+        },
+        "launchWithUpdate": {
+            "type": "boolean",
+            "description": "Whether to update dependencies on launch.",
+            "default": true
         }
     }
 }

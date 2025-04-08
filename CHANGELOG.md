@@ -2,8 +2,9 @@
 
 All notable changes to the FkNode extension will be documented in this file.
 
-## [1.0.0] (Unreleased)
+## [0.0.3]
 
+- Add missing properties from `fknode.yaml` for v3.2.0 autocomplete.
 - Add the ability to make commits from the Command Palette.
 
 ## [0.0.2]
