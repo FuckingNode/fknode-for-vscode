@@ -53,11 +53,16 @@
             {
                 "command": "fknode.upgrade",
                 "title": "Make FuckingNode check for updates"
+            },
+            {
+                "command": "fknode.audit",
+                "title": "Run a FuckingNode audit here"
             }
         ]
     },
-    "description": "The chaos of maintaining JavaScript projects ends right from your editor.",
+    "description": "The chaos of maintaining JavaScript projects ends here, right from your editor.",
     "displayName": "FuckingNode for VSCode",
+    "icon": "./fknvsc.png",
     "engines": {
         "vscode": "^1.97.0"
     },

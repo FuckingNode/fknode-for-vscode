@@ -33,7 +33,7 @@ export const suggestions = [
     {
         label: "commitMessage",
         kind: vscode.CompletionItemKind.Property,
-        detail: "Custom commit message to override FuckingNode's default message for automated commits. String.",
+        detail: "Custom commit message for automated commits. String.",
     },
     {
         label: "updateCmdOverride",
@@ -49,7 +49,7 @@ export const suggestions = [
     {
         label: "releaseCmd",
         kind: vscode.CompletionItemKind.Property,
-        detail: "Task to run on release. String,",
+        detail: "Task to run on release. String.",
         insertText: "prerelease # would run 'npm run prerelease'",
     },
     {
@@ -70,5 +70,32 @@ export const suggestions = [
         detail: "Task to run on launch. String.",
         insertText: "start # would run 'npm run start'",
     },
-    
+    {
+        label: "launchFile",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "File to execute when launchCmd is invoked. Only meant for DenoJS, Cargo, and Golang. String.",
+    },
+    {
+        label: "launchWithUpdate",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Update dependencies when running fklaunch. Boolean.",
+        insertText: "true",
+    },
+    {
+        label: "projectEnvOverride",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Override project environment inference. If FuckingNode assumes this is a Node/pnpm project, but you set this to a different value, whatever you put here will take precedence. String.",
+    },
+    {
+        label: "buildCmd",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Command(s) for build. String. To add several commands, use carets for separation (`command-one^command-two`).",
+        insertText: "build # would run 'npm run build'",
+    },
+    {
+        label: "buildForRelease",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "If true, when running fkrelease, run buildCmd before. Boolean.",
+        insertText: "true",
+    },
 ];

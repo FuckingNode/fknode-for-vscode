@@ -2,6 +2,10 @@
 
 All notable changes to the FkNode extension will be documented in this file.
 
+## [0.0.4]
+
+- Make all necessary fixes for the extension to support FuckingNode V4.
+
 ## [0.0.3]
 
 - Add missing properties from `fknode.yaml` for v3.2.0 autocomplete.

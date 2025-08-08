@@ -66,7 +66,7 @@ export function activate(context: vscode.ExtensionContext) {
             handler: () => {
                 run(
                     "cli",
-                    "fuckingnode clean --self",
+                    "fuckingnode clean .",
                     `Cleaning ${cwd}`,
                     "fkclean"
                 );
@@ -152,37 +152,28 @@ export function activate(context: vscode.ExtensionContext) {
                     title: `Make a Git commit`,
                 });
 
+                // TODO: add a files prompt
+
                 // here i'd use jsr:@zakahacecosas/string-utils but it does not work here :sob:
                 run(
                     "cli",
-                    `fuckingnode commit "${commitMessage}"`,
+                    `fuckingnode commit "${commitMessage}" --keep-staged`,
                     `Committing "${commitMessage}"`,
                     `fkcommit`
                 );
             },
         },
-        // {
-        //     name: "fknode.audit",
-        //     handler: () => {
-        //         run(
-        //             "cli",
-        //             "fuckingnode --experimental-audit --self",
-        //             `Auditing ${cwd}`,
-        //             "fkaudit"
-        //         );
-        //     },
-        // },
-        // {
-        //     name: "fknode.auditStrict",
-        //     handler: () => {
-        //         run(
-        //             "cli",
-        //             "fuckingnode --experimental-audit --self -s",
-        //             `Strictly auditing ${cwd}`,
-        //             "fkaudit (strict)"
-        //         );
-        //     },
-        // },
+         {
+             name: "fknode.audit",
+             handler: () => {
+                 run(
+                     "cli",
+                     "fuckingnode audit .",
+                     `Auditing ${cwd}`,
+                     "fkaudit"
+                 );
+             },
+         },
         {
             name: "fknode.upgrade",
             handler: () => {
