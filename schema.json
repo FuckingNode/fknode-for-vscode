@@ -1,10 +1,11 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$schema": "https://json-schema.org/draft-07/schema",
     "title": "FuckingNode configuration (fknode.yaml)",
     "type": "object",
+    "description": "The fknode.yaml is FuckingNode's configuration file. Add it to a project to customize the behavior of FuckingNode, and setup + enable features that further increase your productivity.",
     "properties": {
         "divineProtection": {
-            "description": "Divine protection, basically to ignore stuff. Must always be an array.",
+            "description": "Divine protection, basically to prevent certain cleanup features to affect this project. Array.",
             "oneOf": [
                 { "enum": ["*", "disabled"] },
                 {
@@ -23,15 +24,17 @@
         },
         "lintCmd": {
             "type": "string",
-            "description": "Script used for linting. Must be a single runtime script name."
+            "description": "Script used for linting (defaults to ESLint if unset). String.",
+            "default": "lint # would run 'npm run lint'"
         },
         "prettyCmd": {
             "type": "string",
-            "description": "Script used for prettifying. Must be a single runtime script name."
+            "description": "Script used for prettifying (defaults to Prettier if unset). String.",
+            "default": "prettify # would run 'npm run prettify'"
         },
         "destroy": {
             "type": "object",
-            "description": "Settings for the destroyer mechanism.",
+            "description": "Settings for the destroyer mechanism. Object.",
             "properties": {
                 "intensities": {
                     "type": "array",
@@ -56,20 +59,21 @@
         },
         "commitActions": {
             "type": "boolean",
-            "description": "If true, commits changes after an action.",
-            "default": false
+            "description": "If true, changes we make via cleanup (e.g. by prettifying the code) will be committed to Git if there wasn't any uncommitted change in here before. Boolean.",
+            "default": true
         },
         "commitMessage": {
             "type": "string",
-            "description": "Custom commit message."
+            "description": "Custom commit message for automated commits. String."
         },
         "updateCmdOverride": {
             "type": "string",
-            "description": "Override the default update command."
+            "description": "Override the update command with a custom script. String.",
+            "default": "update # would run 'npm run update'"
         },
         "flagless": {
             "type": "object",
-            "description": "Flagless features settings.",
+            "description": "Flagless features settings. Object.",
             "properties": {
                 "flaglessUpdate": { "type": "boolean", "default": true },
                 "flaglessDestroy": { "type": "boolean", "default": true },
@@ -80,29 +84,45 @@
         },
         "releaseCmd": {
             "type": "string",
-            "description": "A task to be executed on release."
+            "description": "Task to run on release. String.",
+            "default": "prerelease # would run 'npm run prerelease'"
         },
         "releaseAlwaysDry": {
             "type": "boolean",
-            "description": "If true, releases always use dry-run.",
+            "description": "If true, releases always use dry-run, defaults to false. Boolean.",
             "default": true
         },
         "commitCmd": {
             "type": "string",
-            "description": "A task to be executed on commit."
+            "description": "Task to run on commit. String.",
+            "default": "precommit # would run 'npm run precommit'"
         },
         "launchCmd": {
             "type": "string",
-            "description": "A task to be executed on launch.",
-            "default": "\"start\" # runs 'npm run start'"
+            "description": "Task to run on launch. String. Analog to `launchFile`, only meant for NodeJS and BunJS.",
+            "default": "start # would run 'npm run start'"
         },
         "launchFile": {
             "type": "string",
-            "description": "A file to be executed on launch."
+            "description": "File to execute when launchCmd is invoked. Analog to `launchCmd`, only meant for DenoJS, Cargo, and Golang. String."
         },
         "launchWithUpdate": {
             "type": "boolean",
-            "description": "Whether to update dependencies on launch.",
+            "description": "Update dependencies when running fklaunch. Boolean.",
+            "default": true
+        },
+        "projectEnvOverride": {
+            "type": "string",
+            "description": "Override project environment inference. If FuckingNode assumes this is a Node/pnpm project, but you set this to a different value, whatever you put here will take precedence. String."
+        },
+        "buildCmd": {
+            "type": "string",
+            "description": "Command(s) for build. String. To add several commands, use carets for separation (`command-one^command-two`).",
+            "default": "build # would run 'npm run build'"
+        },
+        "buildForRelease": {
+            "type": "boolean",
+            "description": "If true, when running fkrelease, run buildCmd before. Boolean.",
             "default": true
         }
     }

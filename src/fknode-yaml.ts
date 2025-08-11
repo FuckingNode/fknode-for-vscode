@@ -4,7 +4,7 @@ export const suggestions = [
     {
         label: "divineProtection",
         kind: vscode.CompletionItemKind.Property,
-        detail: "Divine protection options",
+        detail: "Divine protection, basically to prevent certain cleanup features to affect this project. Array.",
         insertText: "*",
     },
     {
@@ -22,12 +22,12 @@ export const suggestions = [
     {
         label: "destroy",
         kind: vscode.CompletionItemKind.Module,
-        detail: "Destroyer settings. Object.",
+        detail: "Settings for the destroyer mechanism. Object.",
     },
     {
         label: "commitActions",
         kind: vscode.CompletionItemKind.Property,
-        detail: "Automatically commit after an action. Boolean.",
+        detail: "If true, changes we make via cleanup (e.g. by prettifying the code) will be committed to Git if there wasn't any uncommitted change in here before. Boolean.",
         insertText: "true",
     },
     {
@@ -56,7 +56,7 @@ export const suggestions = [
         label: "releaseAlwaysDry",
         kind: vscode.CompletionItemKind.Property,
         detail: "If true, releases always use dry-run, defaults to false. Boolean.",
-        insertText: "false",
+        insertText: "true",
     },
     {
         label: "commitCmd",
@@ -67,13 +67,13 @@ export const suggestions = [
     {
         label: "launchCmd",
         kind: vscode.CompletionItemKind.Property,
-        detail: "Task to run on launch. String.",
+        detail: "Task to run on launch. String. Analog to `launchFile`, only meant for NodeJS and BunJS.",
         insertText: "start # would run 'npm run start'",
     },
     {
         label: "launchFile",
         kind: vscode.CompletionItemKind.Property,
-        detail: "File to execute when launchCmd is invoked. Only meant for DenoJS, Cargo, and Golang. String.",
+        detail: "File to execute when launchCmd is invoked. Analog to `launchCmd`, only meant for DenoJS, Cargo, and Golang. String.",
     },
     {
         label: "launchWithUpdate",

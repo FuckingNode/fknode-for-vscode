@@ -2,3 +2,4 @@ destroy:
   intensities: ["*"]
   targets:
       - "dist/"
+commitCmd: "check"

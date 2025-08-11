@@ -2,6 +2,11 @@
 
 All notable changes to the FkNode extension will be documented in this file.
 
+## [0.0.5]
+
+- Fixed the schema for `fknode.yaml` autocomplete not working properly.
+- Improved descriptions of autocomplete items.
+
 ## [0.0.4]
 
 - Make all necessary fixes for the extension to support FuckingNode V4.
