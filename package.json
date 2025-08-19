@@ -1,6 +1,7 @@
 {
     "name": "fknode",
     "version": "0.0.6",
+    "license": "MIT",
     "main": "./dist/extension.js",
     "devDependencies": {
         "@types/vscode": "1.97.0",
