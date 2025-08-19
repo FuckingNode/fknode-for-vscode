@@ -90,7 +90,7 @@ export const suggestions = [
         label: "buildCmd",
         kind: vscode.CompletionItemKind.Property,
         detail: "Command(s) for build. String. To add several commands, use carets for separation (`command-one^command-two`).",
-        insertText: "build # would run 'npm run build'",
+        insertText: "node prerelease.js^npm run build # would run both commands in order",
     },
     {
         label: "buildForRelease",

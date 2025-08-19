@@ -2,6 +2,10 @@
 
 All notable changes to the FkNode extension will be documented in this file.
 
+## [0.0.6]
+
+- Fixed one autocomplete not matching the setting its associated to.
+
 ## [0.0.5]
 
 - Fixed the schema for `fknode.yaml` autocomplete not working properly.
