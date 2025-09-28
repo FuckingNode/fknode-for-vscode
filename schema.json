@@ -2,52 +2,47 @@
     "$schema": "https://json-schema.org/draft-07/schema",
     "title": "FuckingNode configuration (fknode.yaml)",
     "type": "object",
-    "description": "The fknode.yaml is FuckingNode's configuration file. Add it to a project to customize the behavior of FuckingNode, and setup + enable features that further increase your productivity.",
+    "description": "FuckingNode's project config file.",
     "properties": {
         "divineProtection": {
-            "description": "Divine protection, basically to prevent certain cleanup features to affect this project. Array.",
+            "description": "Divine protection, basically to prevent certain cleanup features to affect this project. Array, or '*'.",
             "oneOf": [
-                { "enum": ["*", "disabled"] },
+                { "enum": ["*"] },
                 {
                     "type": "array",
                     "items": {
-                        "enum": [
-                            "updater",
-                            "cleaner",
-                            "linter",
-                            "prettifier",
-                            "destroyer"
-                        ]
+                        "enum": ["updater", "cleaner", "linter", "prettifier", "destroyer"]
                     }
                 }
             ]
         },
-        "lintCmd": {
-            "type": "string",
-            "description": "Script used for linting (defaults to ESLint if unset). String.",
-            "default": "lint # would run 'npm run lint'"
+        "cleanerShortCircuit": {
+            "type": "boolean",
+            "description": "Set to true to short-circuit the clean command whenever a cleanup task fails.",
+            "default": false
         },
-        "prettyCmd": {
+        "lintScript": {
             "type": "string",
-            "description": "Script used for prettifying (defaults to Prettier if unset). String.",
-            "default": "prettify # would run 'npm run prettify'"
+            "description": "Project script used for linting (defaults to ESLint if unset). String."
+        },
+        "prettyScript": {
+            "type": "string",
+            "description": "Project script used for prettifying (defaults to Prettier if unset). String."
         },
         "destroy": {
             "type": "object",
             "description": "Settings for the destroyer mechanism. Object.",
             "properties": {
                 "intensities": {
-                    "type": "array",
-                    "items": {
-                        "enum": [
-                            "*",
-                            "normal",
-                            "hard",
-                            "hard-only",
-                            "maxim",
-                            "maxim-only"
-                        ]
-                    },
+                    "oneOf": [
+                        { "enum": ["*"] },
+                        {
+                            "type": "array",
+                            "items": {
+                                "enum": ["normal", "hard", "hard-only", "maxim", "maxim-only"]
+                            }
+                        }
+                    ],
                     "description": "Intensities the destroyer should run at."
                 },
                 "targets": {
@@ -66,10 +61,9 @@
             "type": "string",
             "description": "Custom commit message for automated commits. String."
         },
-        "updateCmdOverride": {
+        "updaterOverride": {
             "type": "string",
-            "description": "Override the update command with a custom script. String.",
-            "default": "update # would run 'npm run update'"
+            "description": "Override the update command with a custom script. String."
         },
         "flagless": {
             "type": "object",
@@ -83,9 +77,37 @@
             }
         },
         "releaseCmd": {
-            "type": "string",
-            "description": "Task to run on release. String.",
-            "default": "prerelease # would run 'npm run prerelease'"
+            "title": "releaseCmd",
+            "description": "CmdSet for the release command.",
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                        "pattern": "^(~|\\$|=|<).+"
+                    },
+                    {
+                        "type": "object",
+                        "description": "Cross-platform Cmd with MSFT Windows and POSIX macOS/Linux variants.",
+                        "properties": {
+                            "msft": {
+                                "type": "string",
+                                "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                "pattern": "^(~|\\$|=|<).+"
+                            },
+                            "posix": {
+                                "type": "string",
+                                "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                "pattern": "^(~|\\$|=|<).+"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "minProperties": 1
+                    }
+                ]
+            },
+            "minItems": 1
         },
         "releaseAlwaysDry": {
             "type": "boolean",
@@ -93,32 +115,107 @@
             "default": true
         },
         "commitCmd": {
-            "type": "string",
-            "description": "Task to run on commit. String.",
-            "default": "precommit # would run 'npm run precommit'"
+            "title": "commitCmd",
+            "description": "CmdSet for the commit command.",
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                        "pattern": "^(~|\\$|=|<).+"
+                    },
+                    {
+                        "type": "object",
+                        "description": "Cross-platform Cmd with MSFT Windows and POSIX macOS/Linux variants.",
+                        "properties": {
+                            "msft": {
+                                "type": "string",
+                                "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                "pattern": "^(~|\\$|=|<).+"
+                            },
+                            "posix": {
+                                "type": "string",
+                                "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                "pattern": "^(~|\\$|=|<).+"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "minProperties": 1
+                    }
+                ]
+            },
+            "minItems": 1
         },
         "launchCmd": {
-            "type": "string",
-            "description": "Task to run on launch. String. Analog to `launchFile`, only meant for NodeJS and BunJS.",
-            "default": "start # would run 'npm run start'"
-        },
-        "launchFile": {
-            "type": "string",
-            "description": "File to execute when launchCmd is invoked. Analog to `launchCmd`, only meant for DenoJS, Cargo, and Golang. String."
-        },
-        "launchWithUpdate": {
-            "type": "boolean",
-            "description": "Update dependencies when running fklaunch. Boolean.",
-            "default": true
+            "title": "launchCmd",
+            "description": "CmdSet for the launch command.",
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                        "pattern": "^(~|\\$|=|<).+"
+                    },
+                    {
+                        "type": "object",
+                        "description": "Cross-platform Cmd with MSFT Windows and POSIX macOS/Linux variants.",
+                        "properties": {
+                            "msft": {
+                                "type": "string",
+                                "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                "pattern": "^(~|\\$|=|<).+"
+                            },
+                            "posix": {
+                                "type": "string",
+                                "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                "pattern": "^(~|\\$|=|<).+"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "minProperties": 1
+                    }
+                ]
+            },
+            "minItems": 1
         },
         "projectEnvOverride": {
-            "type": "string",
-            "description": "Override project environment inference. If FuckingNode assumes this is a Node/pnpm project, but you set this to a different value, whatever you put here will take precedence. String."
+            "enum": ["npm", "pnpm", "yarn", "deno", "bun", "go", "cargo"],
+            "description": "Override project environment inference. If FuckingNode assumes this is a Node/pnpm project, but you set this to a different value, whatever you put here will take precedence."
         },
         "buildCmd": {
-            "type": "string",
-            "description": "Command(s) for build. String. To add several commands, use carets for separation (`command-one^command-two`).",
-            "default": "node prerelease.js^npm run build # would run both commands in order"
+            "title": "buildCmd",
+            "description": "CmdSet for the build command.",
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                        "pattern": "^(~|\\$|=|<).+"
+                    },
+                    {
+                        "type": "object",
+                        "description": "Cross-platform Cmd with MSFT Windows and POSIX macOS/Linux variants.",
+                        "properties": {
+                            "msft": {
+                                "type": "string",
+                                "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                "pattern": "^(~|\\$|=|<).+"
+                            },
+                            "posix": {
+                                "type": "string",
+                                "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                "pattern": "^(~|\\$|=|<).+"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "minProperties": 1
+                    }
+                ]
+            },
+            "minItems": 1
         },
         "buildForRelease": {
             "type": "boolean",

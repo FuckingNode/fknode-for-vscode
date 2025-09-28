@@ -1,5 +1,6 @@
 destroy:
-  intensities: ["*"]
-  targets:
-      - "dist/"
-commitCmd: "check"
+    intensities: "*"
+    targets:
+        - "dist/"
+commitCmd:
+    - $"check"

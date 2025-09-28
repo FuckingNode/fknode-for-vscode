@@ -2,6 +2,12 @@
 
 All notable changes to the FkNode extension will be documented in this file.
 
+## [0.0.7]
+
+- Updated autocomplete to match V5.
+- Made setting changer more complete. It still doesn't show _all_ settings though.
+- Fixed output of commands not being escaped, showing weird characters meant for the CLI.
+
 ## [0.0.6]
 
 - Fixed one autocomplete not matching the setting its associated to.

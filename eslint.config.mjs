@@ -25,10 +25,10 @@ export default [
                 },
             ],
 
-            curly: "warn",
-            eqeqeq: "warn",
+            "curly": "warn",
+            "eqeqeq": "warn",
             "no-throw-literal": "warn",
-            semi: "warn",
+            "semi": "warn",
         },
     },
 ];

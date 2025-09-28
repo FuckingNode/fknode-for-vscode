@@ -6,6 +6,7 @@
 import * as vscode from "vscode";
 import { exec } from "child_process";
 import { suggestions } from "./fknode-yaml";
+import { stripVTControlCharacters } from "util";
 
 const completionProvider: vscode.CompletionItemProvider = {
     provideCompletionItems(): vscode.CompletionItem[] {
@@ -24,22 +25,15 @@ const completionProvider: vscode.CompletionItemProvider = {
 
 const cwd = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
 
-function run(
-    ctx: "bg" | "cli",
-    command: string,
-    message: string,
-    name?: string
-): void {
+function run(ctx: "bg" | "cli", command: string, message: string, name?: string): void {
     if (ctx === "bg") {
         exec(command, { cwd }, (error, stdout, stderr) => {
             vscode.window.showInformationMessage(message);
-            // TODO - remove cli coloring and stuff from output
-            // string-utils my beloved would've made it easier
             if (error) {
-                vscode.window.showErrorMessage(`Error: ${stderr}`);
+                vscode.window.showErrorMessage(`Error: ${stripVTControlCharacters(stderr)}`);
                 return;
             }
-            vscode.window.showInformationMessage(`Output: ${stdout}`);
+            vscode.window.showInformationMessage(`Output: ${stripVTControlCharacters(stdout)}`);
         });
         return;
     } else {
@@ -64,12 +58,7 @@ export function activate(context: vscode.ExtensionContext) {
         {
             name: "fknode.clean",
             handler: () => {
-                run(
-                    "cli",
-                    "fuckingnode clean .",
-                    `Cleaning ${cwd}`,
-                    "fkclean"
-                );
+                run("cli", "fuckingnode clean .", `Cleaning ${cwd}`, "fkclean");
             },
         },
         {
@@ -78,7 +67,7 @@ export function activate(context: vscode.ExtensionContext) {
                 run(
                     "bg",
                     "fuckingnode hard-clean",
-                    `Cleaning all of your package managers' cache`,
+                    "Cleaning all of your package managers' cache",
                     "fkclean (hard)"
                 );
             },
@@ -87,20 +76,22 @@ export function activate(context: vscode.ExtensionContext) {
         {
             name: "fknode.changeSettings",
             handler: async () => {
-                const settingToChange: string | undefined =
-                    await vscode.window.showQuickPick(
-                        [
-                            "Default cleaner intensity",
-                            "Favorite IDE/editor",
-                            "Log flush frequency",
-                            "Update check frequency",
-                        ],
-                        {
-                            canPickMany: false,
-                            ignoreFocusOut: false,
-                            title: "Choose setting to change",
-                        }
-                    );
+                const settingStrings = [
+                    "Default cleaner intensity",
+                    "Favorite IDE/editor",
+                    "Update check frequency",
+                    "Default package manager",
+                    "Enable/disable notifications",
+                    "Enable/disable cleaner short-circuiting",
+                ];
+                const settingToChange: string | undefined = await vscode.window.showQuickPick(
+                    settingStrings,
+                    {
+                        canPickMany: false,
+                        ignoreFocusOut: false,
+                        title: "Choose setting to change",
+                    }
+                );
 
                 const value = await vscode.window.showInputBox({
                     ignoreFocusOut: true,
@@ -110,35 +101,34 @@ export function activate(context: vscode.ExtensionContext) {
                 });
 
                 // here i'd use jsr:@zakahacecosas/string-utils but it does not work here :sob:
-                if (
-                    ![
-                        "Default cleaner intensity",
-                        "Favorite IDE/editor",
-                        "Log flush frequency",
-                        "Update check frequency",
-                    ].includes(settingToChange ?? "")
-                ) {
+                if (!settingStrings.includes(settingToChange ?? "")) {
                     throw new Error("Invalid setting");
                 }
 
                 const actualSettingToChange:
-                    | "updateFreq"
-                    | "flushFreq"
-                    | "defaultIntensity"
-                    | "favEditor" =
+                    | "update-freq"
+                    | "default-intensity"
+                    | "fav-editor"
+                    | "default-manager"
+                    | "notifications"
+                    | "always-short-circuit-cleanup" =
                     settingToChange === "Update check frequency"
-                        ? "updateFreq"
-                        : settingToChange === "Log flush frequency"
-                            ? "flushFreq"
-                            : settingToChange === "Default cleaner intensity"
-                                ? "defaultIntensity"
-                                : "favEditor";
+                        ? "update-freq"
+                        : settingToChange === "Default package manager"
+                          ? "default-manager"
+                          : settingToChange === "Default cleaner intensity"
+                            ? "default-intensity"
+                            : settingToChange === "Enable/disable notifications"
+                              ? "notifications"
+                              : settingToChange === "Enable/disable cleaner short-circuiting"
+                                ? "always-short-circuit-cleanup"
+                                : "fav-editor";
 
                 run(
                     "bg",
                     `fuckingnode settings change ${actualSettingToChange} ${value}`,
                     `Changing ${settingToChange} to ${value}`,
-                    `fuckingnode settings change`
+                    "fuckingnode settings change"
                 );
             },
         },
@@ -149,7 +139,7 @@ export function activate(context: vscode.ExtensionContext) {
                     ignoreFocusOut: true,
                     placeHolder: "Enter a commit message here",
                     prompt: "What are you committing?",
-                    title: `Make a Git commit`,
+                    title: "Make a Git commit (only already staged files)",
                 });
 
                 // TODO: add a files prompt
@@ -159,50 +149,33 @@ export function activate(context: vscode.ExtensionContext) {
                     "cli",
                     `fuckingnode commit "${commitMessage}" --keep-staged`,
                     `Committing "${commitMessage}"`,
-                    `fkcommit`
+                    "fkcommit"
                 );
             },
         },
-         {
-             name: "fknode.audit",
-             handler: () => {
-                 run(
-                     "cli",
-                     "fuckingnode audit .",
-                     `Auditing ${cwd}`,
-                     "fkaudit"
-                 );
-             },
-         },
+        {
+            name: "fknode.audit",
+            handler: () => {
+                run("cli", "fuckingnode audit .", `Auditing ${cwd}`, "fkaudit");
+            },
+        },
         {
             name: "fknode.upgrade",
             handler: () => {
-                run(
-                    "cli",
-                    "fuckingnode upgrade",
-                    `Checking for updates`,
-                    "fuckingnode upgrade"
-                );
+                run("cli", "fuckingnode upgrade", "Checking for updates", "fuckingnode upgrade");
             },
         },
         {
             name: "fknode.help",
             handler: () => {
-                run(
-                    "cli",
-                    "fuckingnode help",
-                    `Seeing help menu`,
-                    "fkhelp"
-                );
+                run("cli", "fuckingnode help", "Checking FuckingNode help menu", "fkhelp");
             },
         },
     ];
 
     commands.forEach((command) =>
-        context.subscriptions.push(
-            vscode.commands.registerCommand(command.name, command.handler)
-        )
+        context.subscriptions.push(vscode.commands.registerCommand(command.name, command.handler))
     );
 }
 
-export function deactivate() { }
+export function deactivate() {}

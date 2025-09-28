@@ -1,23 +1,27 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 export const suggestions = [
     {
         label: "divineProtection",
         kind: vscode.CompletionItemKind.Property,
-        detail: "Divine protection, basically to prevent certain cleanup features to affect this project. Array.",
+        detail: "Divine protection, prevents certain cleanup features from affecting this project. Array or '*'.",
         insertText: "*",
     },
     {
-        label: "lintCmd",
+        label: "cleanerShortCircuit",
         kind: vscode.CompletionItemKind.Property,
-        detail: "Script used for linting (defaults to ESLint if unset). String.",
-        insertText: "lint # would run 'npm run lint'",
+        detail: "Set to true to short-circuit the clean command whenever a cleanup task fails.",
+        insertText: "false",
     },
     {
-        label: "prettyCmd",
+        label: "lintScript",
         kind: vscode.CompletionItemKind.Property,
-        detail: "Script used for prettifying (defaults to Prettier if unset). String.",
-        insertText: "prettify # would run 'npm run prettify'",
+        detail: "Project script used for linting (defaults to ESLint if unset). String.",
+    },
+    {
+        label: "prettyScript",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Project script used for prettifying (defaults to Prettier if unset). String.",
     },
     {
         label: "destroy",
@@ -36,10 +40,9 @@ export const suggestions = [
         detail: "Custom commit message for automated commits. String.",
     },
     {
-        label: "updateCmdOverride",
+        label: "updaterOverride",
         kind: vscode.CompletionItemKind.Property,
         detail: "Override the update command with a custom script. String.",
-        insertText: "update # would run 'npm run update'",
     },
     {
         label: "flagless",
@@ -49,8 +52,7 @@ export const suggestions = [
     {
         label: "releaseCmd",
         kind: vscode.CompletionItemKind.Property,
-        detail: "Task to run on release. String.",
-        insertText: "prerelease # would run 'npm run prerelease'",
+        detail: "CmdSet for the release command. Array of Cmds.",
     },
     {
         label: "releaseAlwaysDry",
@@ -61,41 +63,27 @@ export const suggestions = [
     {
         label: "commitCmd",
         kind: vscode.CompletionItemKind.Property,
-        detail: "Task to run on commit. String.",
-        insertText: "precommit # would run 'npm run precommit'",
+        detail: "CmdSet for the commit command. Array of Cmds.",
     },
     {
         label: "launchCmd",
         kind: vscode.CompletionItemKind.Property,
-        detail: "Task to run on launch. String. Analog to `launchFile`, only meant for NodeJS and BunJS.",
-        insertText: "start # would run 'npm run start'",
-    },
-    {
-        label: "launchFile",
-        kind: vscode.CompletionItemKind.Property,
-        detail: "File to execute when launchCmd is invoked. Analog to `launchCmd`, only meant for DenoJS, Cargo, and Golang. String.",
-    },
-    {
-        label: "launchWithUpdate",
-        kind: vscode.CompletionItemKind.Property,
-        detail: "Update dependencies when running fklaunch. Boolean.",
-        insertText: "true",
+        detail: "CmdSet for the launch command. Array of Cmds.",
     },
     {
         label: "projectEnvOverride",
         kind: vscode.CompletionItemKind.Property,
-        detail: "Override project environment inference. If FuckingNode assumes this is a Node/pnpm project, but you set this to a different value, whatever you put here will take precedence. String.",
+        detail: "Override project environment inference (npm, pnpm, yarn, deno, bun, go, cargo).. If FuckingNode assumes this is a Node/pnpm project, but you set this to a different value, whatever you put here will take precedence.",
     },
     {
         label: "buildCmd",
         kind: vscode.CompletionItemKind.Property,
-        detail: "Command(s) for build. String. To add several commands, use carets for separation (`command-one^command-two`).",
-        insertText: "node prerelease.js^npm run build # would run both commands in order",
+        detail: "CmdSet for the build command. Array of Cmds.",
     },
     {
         label: "buildForRelease",
         kind: vscode.CompletionItemKind.Property,
-        detail: "If true, when running fkrelease, run buildCmd before. Boolean.",
+        detail: "If true, when running fkrelease, run buildCmd before (default true). Boolean.",
         insertText: "true",
     },
 ];
