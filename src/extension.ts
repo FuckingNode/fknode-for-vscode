@@ -83,7 +83,9 @@ export function activate(context: vscode.ExtensionContext) {
                     "Default package manager",
                     "Enable/disable notifications",
                     "Enable/disable cleaner short-circuiting",
-                ];
+                    "Kickstarted projects root",
+                    "Default workspace cloning policy"
+                ] as const;
                 const settingToChange: string | undefined = await vscode.window.showQuickPick(
                     settingStrings,
                     {
@@ -101,9 +103,11 @@ export function activate(context: vscode.ExtensionContext) {
                 });
 
                 // here i'd use jsr:@zakahacecosas/string-utils but it does not work here :sob:
-                if (!settingStrings.includes(settingToChange ?? "")) {
+                if (!settingStrings.includes(settingToChange ?? "" as any)) {
                     throw new Error("Invalid setting");
                 }
+
+                const typed = settingToChange as typeof settingStrings[number];
 
                 const actualSettingToChange:
                     | "update-freq"
@@ -111,18 +115,20 @@ export function activate(context: vscode.ExtensionContext) {
                     | "fav-editor"
                     | "default-manager"
                     | "notifications"
-                    | "always-short-circuit-cleanup" =
-                    settingToChange === "Update check frequency"
+                    | "always-short-circuit-cleanup"
+                    | "kickstart-root"
+                    | "workspace-policy" =
+                    typed === "Update check frequency"
                         ? "update-freq"
-                        : settingToChange === "Default package manager"
-                          ? "default-manager"
-                          : settingToChange === "Default cleaner intensity"
-                            ? "default-intensity"
-                            : settingToChange === "Enable/disable notifications"
-                              ? "notifications"
-                              : settingToChange === "Enable/disable cleaner short-circuiting"
-                                ? "always-short-circuit-cleanup"
-                                : "fav-editor";
+                        : typed === "Default package manager"
+                            ? "default-manager"
+                            : typed === "Default cleaner intensity"
+                                ? "default-intensity"
+                                : typed === "Enable/disable notifications"
+                                    ? "notifications"
+                                    : typed === "Enable/disable cleaner short-circuiting"
+                                        ? "always-short-circuit-cleanup"
+                                        : typed === "Favorite IDE/editor" ? "fav-editor" : typed === "Default workspace cloning policy" ? "workspace-policy" : "kickstart-root";
 
                 run(
                     "bg",
@@ -178,4 +184,4 @@ export function activate(context: vscode.ExtensionContext) {
     );
 }
 
-export function deactivate() {}
+export function deactivate() { }

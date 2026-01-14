@@ -32,7 +32,7 @@ export const suggestions = [
         label: "commitActions",
         kind: vscode.CompletionItemKind.Property,
         detail: "If true, changes we make via cleanup (e.g. by prettifying the code) will be committed to Git if there wasn't any uncommitted change in here before. Boolean.",
-        insertText: "true",
+        
     },
     {
         label: "commitMessage",
@@ -58,7 +58,7 @@ export const suggestions = [
         label: "releaseAlwaysDry",
         kind: vscode.CompletionItemKind.Property,
         detail: "If true, releases always use dry-run, defaults to false. Boolean.",
-        insertText: "true",
+        
     },
     {
         label: "commitCmd",
@@ -84,6 +84,16 @@ export const suggestions = [
         label: "buildForRelease",
         kind: vscode.CompletionItemKind.Property,
         detail: "If true, when running fkrelease, run buildCmd before (default true). Boolean.",
-        insertText: "true",
+        
     },
+    {
+        label: "kickstartCmd",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "If true, when running fkrelease, run buildCmd before (default true). Boolean.",
+    },
+    {
+        label: "kickstarter",
+        kind: vscode.CompletionItemKind.Property,
+        detail: "Set some defaults for whenever you or another FuckingNode user kickstart this project's code repository."
+    }
 ];

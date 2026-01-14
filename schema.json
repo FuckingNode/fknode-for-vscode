@@ -11,7 +11,13 @@
                 {
                     "type": "array",
                     "items": {
-                        "enum": ["updater", "cleaner", "linter", "prettifier", "destroyer"]
+                        "enum": [
+                            "updater",
+                            "cleaner",
+                            "linter",
+                            "prettifier",
+                            "destroyer"
+                        ]
                     }
                 }
             ]
@@ -39,7 +45,13 @@
                         {
                             "type": "array",
                             "items": {
-                                "enum": ["normal", "hard", "hard-only", "maxim", "maxim-only"]
+                                "enum": [
+                                    "normal",
+                                    "hard",
+                                    "hard-only",
+                                    "maxim",
+                                    "maxim-only"
+                                ]
                             }
                         }
                     ],
@@ -221,6 +233,60 @@
             "type": "boolean",
             "description": "If true, when running fkrelease, run buildCmd before. Boolean.",
             "default": true
+        },
+        "kickstartCmd": {
+            "title": "kickstartCmd",
+            "description": "CmdSet for the kickstart command.",
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                        "pattern": "^(~|\\$|=|<).+"
+                    },
+                    {
+                        "type": "object",
+                        "description": "Cross-platform Cmd with MSFT Windows and POSIX macOS/Linux variants.",
+                        "properties": {
+                            "msft": {
+                                "type": "string",
+                                "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                "pattern": "^(~|\\$|=|<).+"
+                            },
+                            "posix": {
+                                "type": "string",
+                                "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                "pattern": "^(~|\\$|=|<).+"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "minProperties": 1
+                    }
+                ]
+            },
+            "minItems": 1
+        },
+        "kickstarter": {
+            "title": "kickstarter",
+            "description": "Set some defaults for whenever you or another FuckingNode user kickstart this project's code repository.",
+            "type": "object",
+            "properties": {
+                "workspaces": {
+                    "type": ["string", "null"],
+                    "enum": ["force-liberty", "unified", "standalone"],
+                    "description": "Define workspace handling. Use 'force-liberty' to force a prompt even if the user has a setting to skip it, 'unified' to force workspaces to be added as a single project, or 'standalone' to force workspaces to be added individually."
+                },
+                "install": {
+                    "description": "Define dependency handling. Use 'no' to skip installation (for repos without dependencies, or monorepos with different places to install dependencies in), or 'use (COMMAND HERE)' to make the user run a custom command (e.g. 'use npm run install-deps --dev') (this will be 'offered' to the user and won't automatically run; they can reject it if they don't trust it).",
+                    "oneOf": [
+                        { "type": "null" },
+                        { "type": "string", "enum": ["no"] },
+                        { "type": "string", "pattern": "^use .+$" }
+                    ]
+                }
+            },
+            "additionalProperties": false
         }
     }
 }

@@ -2,6 +2,11 @@
 
 All notable changes to the FkNode extension will be documented in this file.
 
+## [0.0.8]
+
+- Updated settings and autocomplete to match V5.2.0.
+- Fixed autocomplete not detecting nested `fknode.yaml` files.
+
 ## [0.0.7]
 
 - Updated autocomplete to match V5.
