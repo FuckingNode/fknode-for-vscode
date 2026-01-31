@@ -11,13 +11,7 @@
                 {
                     "type": "array",
                     "items": {
-                        "enum": [
-                            "updater",
-                            "cleaner",
-                            "linter",
-                            "prettifier",
-                            "destroyer"
-                        ]
+                        "enum": ["updater", "cleaner", "linter", "prettifier", "destroyer"]
                     }
                 }
             ]
@@ -45,13 +39,7 @@
                         {
                             "type": "array",
                             "items": {
-                                "enum": [
-                                    "normal",
-                                    "hard",
-                                    "hard-only",
-                                    "maxim",
-                                    "maxim-only"
-                                ]
+                                "enum": ["normal", "hard", "hard-only", "maxim", "maxim-only"]
                             }
                         }
                     ],
@@ -116,6 +104,37 @@
                         },
                         "additionalProperties": false,
                         "minProperties": 1
+                    },
+                    {
+                        "type": "array",
+                        "description": "Array of instructions. They run in parallel, all at the same time.",
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "type": "string",
+                                    "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                    "pattern": "^(~|\\$|=|<).+"
+                                },
+                                {
+                                    "type": "object",
+                                    "description": "Cross-platform Cmd with MSFT Windows and POSIX macOS/Linux variants.",
+                                    "properties": {
+                                        "msft": {
+                                            "type": "string",
+                                            "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                            "pattern": "^(~|\\$|=|<).+"
+                                        },
+                                        "posix": {
+                                            "type": "string",
+                                            "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                            "pattern": "^(~|\\$|=|<).+"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "minProperties": 1
+                                }
+                            ]
+                        }
                     }
                 ]
             },
@@ -154,6 +173,37 @@
                         },
                         "additionalProperties": false,
                         "minProperties": 1
+                    },
+                    {
+                        "type": "array",
+                        "description": "Array of instructions. They run in parallel, all at the same time.",
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "type": "string",
+                                    "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                    "pattern": "^(~|\\$|=|<).+"
+                                },
+                                {
+                                    "type": "object",
+                                    "description": "Cross-platform Cmd with MSFT Windows and POSIX macOS/Linux variants.",
+                                    "properties": {
+                                        "msft": {
+                                            "type": "string",
+                                            "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                            "pattern": "^(~|\\$|=|<).+"
+                                        },
+                                        "posix": {
+                                            "type": "string",
+                                            "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                            "pattern": "^(~|\\$|=|<).+"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "minProperties": 1
+                                }
+                            ]
+                        }
                     }
                 ]
             },
@@ -187,6 +237,37 @@
                         },
                         "additionalProperties": false,
                         "minProperties": 1
+                    },
+                    {
+                        "type": "array",
+                        "description": "Array of instructions. They run in parallel, all at the same time.",
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "type": "string",
+                                    "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                    "pattern": "^(~|\\$|=|<).+"
+                                },
+                                {
+                                    "type": "object",
+                                    "description": "Cross-platform Cmd with MSFT Windows and POSIX macOS/Linux variants.",
+                                    "properties": {
+                                        "msft": {
+                                            "type": "string",
+                                            "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                            "pattern": "^(~|\\$|=|<).+"
+                                        },
+                                        "posix": {
+                                            "type": "string",
+                                            "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                            "pattern": "^(~|\\$|=|<).+"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "minProperties": 1
+                                }
+                            ]
+                        }
                     }
                 ]
             },
@@ -224,6 +305,37 @@
                         },
                         "additionalProperties": false,
                         "minProperties": 1
+                    },
+                    {
+                        "type": "array",
+                        "description": "Array of instructions. They run in parallel, all at the same time.",
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "type": "string",
+                                    "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                    "pattern": "^(~|\\$|=|<).+"
+                                },
+                                {
+                                    "type": "object",
+                                    "description": "Cross-platform Cmd with MSFT Windows and POSIX macOS/Linux variants.",
+                                    "properties": {
+                                        "msft": {
+                                            "type": "string",
+                                            "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                            "pattern": "^(~|\\$|=|<).+"
+                                        },
+                                        "posix": {
+                                            "type": "string",
+                                            "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                            "pattern": "^(~|\\$|=|<).+"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "minProperties": 1
+                                }
+                            ]
+                        }
                     }
                 ]
             },
@@ -262,6 +374,37 @@
                         },
                         "additionalProperties": false,
                         "minProperties": 1
+                    },
+                    {
+                        "type": "array",
+                        "description": "Array of instructions. They run in parallel, all at the same time.",
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "type": "string",
+                                    "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                    "pattern": "^(~|\\$|=|<).+"
+                                },
+                                {
+                                    "type": "object",
+                                    "description": "Cross-platform Cmd with MSFT Windows and POSIX macOS/Linux variants.",
+                                    "properties": {
+                                        "msft": {
+                                            "type": "string",
+                                            "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                            "pattern": "^(~|\\$|=|<).+"
+                                        },
+                                        "posix": {
+                                            "type": "string",
+                                            "description": "Cmd. Must be prefixed with either ~, $, = or <, depending on the Cmd type.",
+                                            "pattern": "^(~|\\$|=|<).+"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "minProperties": 1
+                                }
+                            ]
+                        }
                     }
                 ]
             },

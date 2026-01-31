@@ -2,6 +2,13 @@
 
 All notable changes to the FkNode extension will be documented in this file.
 
+## [0.0.9]
+
+- Updated settings and autocomplete to match V5.2.2.
+- Fixed the extension lacking activation events.
+- Fixed the extension not checking if you're in a workspace or not.
+- Fixed commit running even if a commit message isn't provided.
+
 ## [0.0.8]
 
 - Updated settings and autocomplete to match V5.2.0.

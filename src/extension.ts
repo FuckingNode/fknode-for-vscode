@@ -25,31 +25,48 @@ const completionProvider: vscode.CompletionItemProvider = {
 
 const cwd = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
 
-function run(ctx: "bg" | "cli", command: string, message: string, name?: string): void {
-    if (ctx === "bg") {
-        exec(command, { cwd }, (error, stdout, stderr) => {
-            vscode.window.showInformationMessage(message);
-            if (error) {
-                vscode.window.showErrorMessage(`Error: ${stripVTControlCharacters(stderr)}`);
-                return;
-            }
-            vscode.window.showInformationMessage(`Output: ${stripVTControlCharacters(stdout)}`);
-        });
-        return;
-    } else {
-        const terminal =
-            vscode.window.terminals.find((t) => t.name === name) ||
-            vscode.window.createTerminal(name);
-        terminal.show();
-        terminal.sendText(command);
+const SETTINGS_MAP = {
+    "Default cleaner intensity": "default-intensity",
+    "Favorite IDE/editor": "fav-editor",
+    "Update check frequency": "update-freq",
+    "Default package manager": "default-manager",
+    "Enable/disable notifications": "notifications",
+    "Enable/disable cleaner short-circuiting": "always-short-circuit-cleanup",
+    "Kickstarted projects root": "kickstart-root",
+    "Default workspace cloning policy": "workspace-policy",
+} as const;
+
+function run(ctx: "bg" | "cli", command: string, message: string, name: string): void {
+    if (!cwd) {
+        vscode.window.showErrorMessage("No workspace folder open");
         return;
     }
+
+    if (ctx === "bg") {
+        exec(command, { cwd }, (error, stdout, stderr) => {
+            if (error) {
+                vscode.window.showErrorMessage(stripVTControlCharacters(stderr || error.message));
+                return;
+            }
+
+            vscode.window.showInformationMessage(message);
+            if (stdout) {
+                vscode.window.showInformationMessage(stripVTControlCharacters(stdout));
+            }
+        });
+        return;
+    }
+
+    const terminal =
+        vscode.window.terminals.find((t) => t.name === name) ?? vscode.window.createTerminal(name);
+    terminal.show();
+    terminal.sendText(command);
 }
 
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.languages.registerCompletionItemProvider(
-            { scheme: "file", language: "yaml" },
+            { language: "yaml", pattern: "**/fknode*.yml" },
             completionProvider
         )
     );
@@ -76,24 +93,14 @@ export function activate(context: vscode.ExtensionContext) {
         {
             name: "fknode.changeSettings",
             handler: async () => {
-                const settingStrings = [
-                    "Default cleaner intensity",
-                    "Favorite IDE/editor",
-                    "Update check frequency",
-                    "Default package manager",
-                    "Enable/disable notifications",
-                    "Enable/disable cleaner short-circuiting",
-                    "Kickstarted projects root",
-                    "Default workspace cloning policy"
-                ] as const;
-                const settingToChange: string | undefined = await vscode.window.showQuickPick(
-                    settingStrings,
-                    {
-                        canPickMany: false,
-                        ignoreFocusOut: false,
-                        title: "Choose setting to change",
-                    }
+                const settingToChange = await vscode.window.showQuickPick(
+                    Object.keys(SETTINGS_MAP),
+                    { title: "Choose setting to change" }
                 );
+
+                if (!settingToChange) {
+                    return;
+                }
 
                 const value = await vscode.window.showInputBox({
                     ignoreFocusOut: true,
@@ -102,33 +109,12 @@ export function activate(context: vscode.ExtensionContext) {
                     title: `Change ${settingToChange}`,
                 });
 
-                // here i'd use jsr:@zakahacecosas/string-utils but it does not work here :sob:
-                if (!settingStrings.includes(settingToChange ?? "" as any)) {
-                    throw new Error("Invalid setting");
+                if (!value) {
+                    return;
                 }
 
-                const typed = settingToChange as typeof settingStrings[number];
-
-                const actualSettingToChange:
-                    | "update-freq"
-                    | "default-intensity"
-                    | "fav-editor"
-                    | "default-manager"
-                    | "notifications"
-                    | "always-short-circuit-cleanup"
-                    | "kickstart-root"
-                    | "workspace-policy" =
-                    typed === "Update check frequency"
-                        ? "update-freq"
-                        : typed === "Default package manager"
-                            ? "default-manager"
-                            : typed === "Default cleaner intensity"
-                                ? "default-intensity"
-                                : typed === "Enable/disable notifications"
-                                    ? "notifications"
-                                    : typed === "Enable/disable cleaner short-circuiting"
-                                        ? "always-short-circuit-cleanup"
-                                        : typed === "Favorite IDE/editor" ? "fav-editor" : typed === "Default workspace cloning policy" ? "workspace-policy" : "kickstart-root";
+                const actualSettingToChange =
+                    SETTINGS_MAP[settingToChange as keyof typeof SETTINGS_MAP];
 
                 run(
                     "bg",
@@ -147,6 +133,10 @@ export function activate(context: vscode.ExtensionContext) {
                     prompt: "What are you committing?",
                     title: "Make a Git commit (only already staged files)",
                 });
+
+                if (!commitMessage) {
+                    return;
+                }
 
                 // TODO: add a files prompt
 
@@ -184,4 +174,4 @@ export function activate(context: vscode.ExtensionContext) {
     );
 }
 
-export function deactivate() { }
+export function deactivate() {}
